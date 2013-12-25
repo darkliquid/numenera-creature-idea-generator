@@ -82,7 +82,7 @@ function init() {
 
     $('#clear-all').on('click', function(e) {
         e.preventDefault();
-        $('#generate').html('');
+        $('#creature').html('');
         generate();
     });
 
