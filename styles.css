@@ -60,3 +60,13 @@ footer {
   padding: 0.5em 2em;
   position:relative;
 }
+
+#creature {
+  font-size: 16px;
+  line-height: 1.4em;
+}
+
+#creature .attribution small {
+  display: inline;
+  font-size: 1em;
+}
