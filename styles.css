@@ -70,3 +70,34 @@ footer {
   display: inline;
   font-size: 1em;
 }
+
+#creature dl {
+  padding: 0.5em;
+  background: #333;
+  background: rgba(0,0,0,0.6);
+  max-width: 400px;
+  margin: auto;
+}
+
+#creature .power {
+  padding: 0.5em;
+  background: #333;
+  background: rgba(0,0,0,0.6);
+  max-width: 400px;
+  margin: auto;
+}
+
+#creature dt {
+  float: left;
+  clear: left;
+  width: 200px;
+  text-align: right;
+  font-weight: bold;
+}
+
+#creature dd {
+  margin: 0 0 0 210px;
+  padding: 0 0 0.5em 0;
+}
+
+hr { clear: both; }
