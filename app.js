@@ -2,32 +2,32 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function loadCGHubImagePromise() {
-    var tags = ['creature', 'monster', 'alien'],
+function loadVisualArtImagePromise() {
+    var tags = ['creature', 'monster', 'alien', 'animal', 'beast'],
         tag = tags[Math.floor(Math.random()*tags.length)],
-        url = 'http://cghub.com/images/tag/' + tag;
+        url = 'http://www.visualart.me/search/index?type=tags&q=' + tag;
     return $.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(url) + '&callback=?')
     .then(function(data){
         var html = $($.parseHTML(data.contents)),
-            last_page_link = html.find('#main .paging .last a').prop('href'),
+            last_page_link = html.find('#main #pagination li:not([class]):last a').prop('href'),
             page_count = 1;
 
         if(last_page_link && last_page_link.length > 0) {
-            page_count = last_page_link.match(/\:(\d+)\/$/)[1];
+            page_count = last_page_link.match(/page=(\d+)/)[1];
         }
         
         var page = getRandomInt(1, page_count);
 
-        return $.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(url+'/page:'+page+'/') + '&callback=?');
+        return $.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(url+'&page='+page) + '&callback=?');
     })
     .done(function(data){
         var html = $($.parseHTML(data.contents)),
-            creatures = html.find('.detgallery li'),
+            creatures = html.find('#main .browse .photo .thumb'),
             creature = creatures.eq(Math.floor(Math.random()*creatures.length)),
-            image = creature.find('img.m').eq(0),
-            info = creature.find('h4 > a, h4 > small:first'),
+            image = creature.find('img').eq(0),
+            info = creature.find('.info .left'),
             attribution = $('<div class="attribution"></div>').append(info);
-
+            image.prop('src', image.data('href'));
             $('#creature').append(image).append('<br>').append(attribution);
     });
 }
@@ -69,7 +69,7 @@ function generateStats() {
 }
 
 function generate() {
-    loadCGHubImagePromise().done(generatePowers).done(generateStats).done(function() {
+    loadVisualArtImagePromise().done(generatePowers).done(generateStats).done(function() {
         $('#creature').append('<hr>');
     });
 }
