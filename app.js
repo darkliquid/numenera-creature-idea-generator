@@ -3,13 +3,13 @@ function getRandomInt(min, max) {
 }
 
 function loadVisualArtImagePromise() {
-    var tags = ['creature', 'monster', 'alien', 'animal', 'beast'],
+    var tags = ['creature', 'monster', 'alien', 'animal'],
         tag = tags[Math.floor(Math.random()*tags.length)],
         url = 'http://www.visualart.me/search/index?type=tags&q=' + tag;
-    return $.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(url) + '&callback=?')
+    return $.getJSON('proxy.php?url=' + encodeURIComponent(url))
     .then(function(data){
         var html = $($.parseHTML(data.contents)),
-            last_page_link = html.find('#main #pagination li:not([class]):last a').prop('href'),
+            last_page_link = html.find('#pagination .pages li:not([class]):last a').prop('href'),
             page_count = 1;
 
         if(last_page_link && last_page_link.length > 0) {
@@ -18,17 +18,19 @@ function loadVisualArtImagePromise() {
         
         var page = getRandomInt(1, page_count);
 
-        return $.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(url+'&page='+page) + '&callback=?');
+        return $.getJSON('proxy.php?url=' + encodeURIComponent(url+'&page='+page));
     })
     .done(function(data){
         var html = $($.parseHTML(data.contents)),
             creatures = html.find('#main .browse .photo .thumb'),
             creature = creatures.eq(Math.floor(Math.random()*creatures.length)),
             image = creature.find('img').eq(0),
-            info = creature.find('.info .left'),
-            attribution = $('<div class="attribution"></div>').append(info);
-            image.prop('src', image.data('href'));
-            $('#creature').append(image).append('<br>').append(attribution);
+            info = creature.find('.info .left a');
+            var attribution = $('<div class="attribution"></div>').append(info.first());
+            attribution.append("<span>&nbsp;by&nbsp;</span>");
+            attribution.append(info.last());
+            var linked_image = $('<a></a>').prop('href', image.data('href')).append(image);
+            $('#creature').append(linked_image).append('<br>').append(attribution);
     });
 }
 
