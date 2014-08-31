@@ -29,7 +29,7 @@ function loadVisualArtImagePromise() {
             var attribution = $('<div class="attribution"></div>').append(info.first());
             attribution.append("<span>&nbsp;by&nbsp;</span>");
             attribution.append(info.last());
-            var linked_image = $('<a></a>').prop('href', image.data('href')).append(image);
+            var linked_image = $('<a></a>').prop('href', image.data('href')).prop('target', '_blank').append(image);
             $('#creature').append(linked_image).append('<br>').append(attribution);
     });
 }

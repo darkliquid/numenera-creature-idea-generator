@@ -1,5 +1,9 @@
 <?php
 
+if (extension_loaded ('newrelic')) {
+    newrelic_set_appname ("Numenera Creature Generator");
+}
+
 /* gets the contents of a file if it exists, otherwise grabs and caches */
 function get_content($file,$url,$hours = 24,$fn = '',$fn_args = '') {
 	//vars
